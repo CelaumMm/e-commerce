@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Store;
+use App\Traits\UploadTrait;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    use UploadTrait;
+
     private $product;
 
     public function __construct(Product $product)
@@ -57,7 +61,7 @@ class ProductController extends Controller
         $product->categories()->sync($data['categories']);
 
         if($request->hasFile('photos')){
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('photos'), 'image');
 
             // inserção das referencias das imagens na base
             $product->photos()->createMany($images);
@@ -107,7 +111,7 @@ class ProductController extends Controller
         $product->categories()->sync($data['categories']);
 
         if($request->hasFile('photos')){
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('photos'), 'image');
 
             // inserção das referencias das imagens na base
             $product->photos()->createMany($images);
@@ -130,17 +134,5 @@ class ProductController extends Controller
 
         flash('Produto Removido com Sucesso')->success();
         return redirect()->route('admin.products.index');   
-    }
-
-    private function imageUpload(Request $request, $imageColumn)
-    {
-        $images = $request->file('photos');
-        $uploadedImages =[];
-        foreach ($images as $image) {
-            // primeiro parametro do store é a paste a ser armazenado e o segundo é o disco
-            $uploadedImages[] = [$imageColumn => $image->store('products', 'public')];
-        }
-
-        return $uploadedImages;
     }
 }

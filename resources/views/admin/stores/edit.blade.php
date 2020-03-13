@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Criar Loja</h1>
-    <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="post">
+    <form action="{{ route('admin.stores.update', ['store' => $store->id]) }}" method="post" enctype="multipart/form-data">
         {{-- <input type="hidden" name="_token" value="{{csrf_token()}}"> --}}
         {{-- <input type="hidden" name="_method" value="PUT"> --}}
         @csrf
@@ -45,6 +45,17 @@
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <p><img src="{{asset('storage/' . $store->logo)}}" alt="" class="img-fluid"></p>
+            <label>Foto do Logo</label>
+            <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror">
+            @error('logo')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
             @enderror
         </div>
         
