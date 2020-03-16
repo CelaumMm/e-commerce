@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/product/{slug}', 'HomeController@single')->name('product.single');
 
+Route::prefix('cart')->name('cart.')->group(function(){
+    Route::get('/', 'CartController@index')->name('index');
+    Route::post('add', 'CartController@add')->name('add');
+});
+
 Route::group(['middleware' => ['auth']], function(){
 
     Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function(){
