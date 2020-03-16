@@ -12,6 +12,6 @@ class CheckoutController extends Controller
             return redirect()->route('login');
         }
 
-        print 'chckout';
+        return view('checkout');
     }
 }
