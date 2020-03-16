@@ -16,7 +16,10 @@
                         <p class="card-text">
                             {{ $product->description }}
                         </p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h3>
+                            R$ {{ number_format($product->price, '2', ',', '.') }}
+                        </h3>
+                        <a href="{{ route('product.single', ['slug' => $product->slug]) }}" class="btn btn-success">Ver Produto</a>
                     </div>
                 </div>
             </div>
