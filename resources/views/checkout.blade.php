@@ -12,7 +12,7 @@
             <form action="" method="post">
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label>Número do Cartão</label>
+                        <label>Número do Cartão <span class="brand"></span></label>
                         <input type="text" name="card_number" class="form-control">
                     </div>
                 </div>
@@ -40,4 +40,35 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+    <script>
+        const sessionId = '{{ session()->get('pagseguro_session_code') }}';
+        PagSeguroDirectPayment.setSessionId(sessionId);
+    </script>
+
+    <script>
+        let cardNumber = document.querySelector('input[name=card_number]');
+        let spanBrand = document.querySelector('span.brand');
+
+        cardNumber.addEventListener('keyup', function(){
+            if(cardNumber.value.length >= 6){
+                PagSeguroDirectPayment.getBrand({
+                    cardBin: cardNumber.value.substr(0, 6), // a partir da casa 0 pegar 6 caracteres
+                    success: function(res){
+                        let imgFlag = `<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/${res.brand.name}.png">`;
+                        spanBrand.innerHTML = imgFlag;
+                    },
+                    error: function(res){
+                        console.log(res);
+                    },
+                    complete: function(res){
+                        //console.log('Complete', res);
+                    }
+                });
+            }
+        });
+    </script>
 @endsection
