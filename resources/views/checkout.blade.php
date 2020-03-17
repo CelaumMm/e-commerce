@@ -34,6 +34,8 @@
                         <label>Código de Segurança</label>
                         <input type="text" name="card_cvv" class="form-control">
                     </div>
+
+                    <div class="col-md-12 installments form-group"></div>
                 </div>
 
                 <button class="btn btn-success btn-lg">Efetuar Pagamento</button>
@@ -60,6 +62,8 @@
                     success: function(res){
                         let imgFlag = `<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/${res.brand.name}.png">`;
                         spanBrand.innerHTML = imgFlag;
+
+                        getInstallments(40, res.brand.name);
                     },
                     error: function(res){
                         console.log(res);
@@ -70,5 +74,37 @@
                 });
             }
         });
+
+        function getInstallments(amount, brand){
+            PagSeguroDirectPayment.getInstallments({
+                amount: amount,
+                brand: brand,
+                //maxInstallmentNoInterest: 3, //quantidade de parcelas que você assumo os juros
+                maxInstallmentNoInterest: 0,
+                success: function(res){
+                    let selectInstallments = drawSelectInstallments(res.installments[brand]);
+                    document.querySelector('div.installments').innerHTML = selectInstallments;
+                },
+                error: function(err){
+                    console.log(err);
+                },
+                complete: function(res){
+
+                }
+            });
+        }
+
+        function drawSelectInstallments(installments) {
+            let select = '<label>Opções de Parcelamento:</label>';
+            select += '<select class="form-control">';
+
+            for(let l of installments) {
+                select += `<option value="${l.quantity}|${l.installmentAmount}">${l.quantity}x de ${l.installmentAmount} - Total fica ${l.totalAmount}</option>`;
+            }
+
+            select += '</select>';
+
+            return select;
+        }
     </script>
 @endsection
