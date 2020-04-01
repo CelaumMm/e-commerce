@@ -15,6 +15,10 @@ class CheckoutController extends Controller
             return redirect()->route('login');
         }
 
+        if(!session()->has('cart')){
+            return redirect()->route('home');
+        }
+
         $this->makePagSeguroSession();
 
         $cartItems = array_map(function($line){
@@ -28,30 +32,50 @@ class CheckoutController extends Controller
 
     public function proccess(Request $request)
     {
-        $dataPost = $request->all();
-        $user = auth()->user();
-        $cartItems = session()->get('cart');
-        $reference = 'XPTO';
+        try {
+            $dataPost = $request->all();
+            $user = auth()->user();
+            $cartItems = session()->get('cart');
+            $reference = 'XPTO';
+    
+            $creditCardPayment = new CreditCard($cartItems, $user, $dataPost, $reference);
+            $result = $creditCardPayment->doPayment();
+            
+            $userOder = [
+                'reference' => $reference,
+                'pagseguro_code' => $result->getCode(),
+                'pagseguro_status' => $result->getStatus(),
+                'items' => serialize($cartItems),
+                'store_id' => 41
+            ];
+    
+            $user->orders()->create($userOder);
+    
+            session()->forget('cart');
+            session()->forget('pagseguro_session_code');
+    
+            return response()->json([
+                'data' => [
+                    'status' => true,
+                    'message' => 'Pedido criado com sucesso!',
+                    'order' => $reference
+                ]
+            ]);
+        } catch (\Exception $e) {
+            $message = env('APP_DEBUG') ? $e->getMessage() : 'Erro ao processar pedido!';
 
-        $creditCardPayment = new CreditCard($cartItems, $user, $dataPost, $reference);
-        $result = $creditCardPayment->doPayment();
-        
-        $userOder = [
-            'reference' => $reference,
-            'pagseguro_code' => $result->getCode(),
-            'pagseguro_status' => $result->getStatus(),
-            'items' => serialize($cartItems),
-            'store_id' => 41
-        ];
+            return response()->json([
+                'data' => [
+                    'status' => false,
+                    'message' => $message
+                ]
+                ], 401);
+        }
+    }
 
-        $user->orders()->create($userOder);
-
-        return response()->json([
-            'data' => [
-                'status' => true,
-                'message' => 'Pedido criado com sucesso!'
-            ]
-        ]);
+    public function thanks()
+    {
+        return view('thanks');
     }
 
     public function makePagSeguroSession()
