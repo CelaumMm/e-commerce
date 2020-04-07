@@ -32,13 +32,23 @@ class Store extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Ligação de 1 para muitos
+     *
+     * @return void
+     */
     public function products()
     {
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * Ligação de muitos para muitos - Essa loja tem muitos pedidos
+     *
+     * @return void
+     */
     public function orders()
     {
-        return $this->hasMany(UserOrder::class);
+        return $this->belongsToMany(UserOrder::class, 'order_store');
     }
 }

@@ -24,4 +24,14 @@ class UserOrder extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    /**
+     * Ligação de muitos para muitos
+     *
+     * @return void
+     */
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'order_store', 'order_id');
+    }
 }
