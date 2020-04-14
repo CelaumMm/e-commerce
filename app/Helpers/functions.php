@@ -1,8 +1,8 @@
 <?php
 
-function filterItemsByStoreId($items, $storeId)
+function filterItemsByStoreId(array $items, $storeId)
 {
-    array_filter($items, function($line) use($storeId){
+    return array_filter($items, function($line) use($storeId){
         return $line['store_id'] == $storeId;
     });
 }
