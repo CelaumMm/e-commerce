@@ -34,6 +34,6 @@ class ComposerServiceProvider extends ServiceProvider
         // });
 
         // Compartilhamento por arquivo view composer
-        view()->composer('*', 'App\Http\Views\CategoryViewComposer@compose');
+        view()->composer('layouts.front', 'App\Http\Views\CategoryViewComposer@compose');
     }
 }
