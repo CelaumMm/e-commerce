@@ -16,35 +16,35 @@
             <form action="" method="post">
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label>Nome no Cartão</label>
-                        <input type="text" name="card_name" class="form-control">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <label>Número do Cartão <span class="brand"></span></label>
+                        <label>Número do Cartão (4111111111111111) <span class="brand"></span></label>
                         <input type="text" name="card_number" class="form-control">
                         <input type="hidden" name="card_brand">
                     </div>
                 </div>
 
                 <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label>Nome no Cartão</label>
+                        <input type="text" name="card_name" class="form-control" value="Marcelo Camargo">
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-md-4 form-group">
                         <label>Mês de Expiração</label>
-                        <input type="text" name="card_month" class="form-control">
+                        <input type="text" name="card_month" class="form-control" value="12">
                     </div>
 
                     <div class="col-md-4 form-group">
                         <label>Ano de Expiração</label>
-                        <input type="text" name="card_year" class="form-control">
+                        <input type="text" name="card_year" class="form-control" value="2030">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-5 form-group">
                         <label>Código de Segurança</label>
-                        <input type="text" name="card_cvv" class="form-control">
+                        <input type="text" name="card_cvv" class="form-control" value="123">
                     </div>
 
                     <div class="col-md-12 installments form-group"></div>
