@@ -38,9 +38,13 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('products' ,'ProductController');
         Route::resource('categories' ,'CategoryController');
 
-        Route::post('/photos/remove', 'ProductPhotoController@removePhoto')->name('photo.remove');
+        Route::post('photos/remove', 'ProductPhotoController@removePhoto')->name('photo.remove');
         
-        Route::get('/orders/my', 'OrderController@index')->name('orders.my');
+        Route::get('orders/my', 'OrderController@index')->name('orders.my');
+
+        Route::get('notifications', 'NotificationController@notifications')->name('notifications.index');
+        Route::get('notifications/read-all', 'NotificationController@readAll')->name('notifications.read.all');
+        Route::get('notifications/read/{notification}', 'NotificationController@read')->name('notifications.read');
     });
 
 });

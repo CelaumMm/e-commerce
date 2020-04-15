@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     @yield('stylesheets')
@@ -57,6 +58,12 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.notifications.index') }}">
+                                    <span class="badge badge-danger">{{ auth()->user()->unreadNotifications->count() }}</span>
+                                    <i class="fa fa-bell"></i>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <span class="nav-link">{{ auth()->user()->name }}</span>
                             </li>
