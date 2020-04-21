@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="">Telefone</label>
-            <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}">
+            <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}">
             @error('phone')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -38,7 +38,7 @@
 
         <div class="form-group">
             <label for="">Celular/WhatsApp</label>
-            <input type="text" name="mobile_phone" class="form-control @error('mobile_phone') is-invalid @enderror" value="{{ old('mobile_phone') }}">
+            <input type="text" name="mobile_phone" id="mobile_phone" class="form-control @error('mobile_phone') is-invalid @enderror" value="{{ old('mobile_phone') }}">
             @error('mobile_phone')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -59,4 +59,14 @@
         
         <div><button type="submit" class="btn btn-lg btn-success">Criar Loja</button></div>
     </form>
+@endsection
+
+@section('scripts')
+    <script>
+        let imPhone = Inputmask('(99) 9999-9999', { "clearIncomplete": true }); 
+        imPhone.mask(document.getElementById('phone'));
+
+        let imMobilePhone = Inputmask('(99) 99999-9999', { "clearIncomplete": true }); 
+        imMobilePhone.mask(document.getElementById('mobile_phone'));
+    </script>
 @endsection
