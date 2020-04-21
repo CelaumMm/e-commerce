@@ -50,6 +50,16 @@
                                     Meus pedidos
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('logout') }}" 
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Sair
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
                         @endauth
 
                         <li class="nav-item @if(request()->is('cart')) active @endif">
