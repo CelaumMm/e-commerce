@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->timestamps();
 
             // nome da chave estrangeira: products_store_id_foreign
-            $table->foreign('store_id')->references('id')->on('stores');
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
         });
     }
 
